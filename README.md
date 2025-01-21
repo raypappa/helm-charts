@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://github.com/raypappa/raypappa/blob/main/_assets/images/logo.jpg?raw=true" align="left" width="144px" height="144px"/>
-
 <h1> helm-charts </h1>
 
 </div>
