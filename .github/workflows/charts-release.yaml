@@ -20,7 +20,6 @@ on:
 
 env:
   HELM_VERSION: 3.11.2
-
 jobs:
   prepare:
     name: Prepare data required for release
@@ -35,7 +34,7 @@ jobs:
           fetch-depth: 0
 
       - name: Collect charts to release
-        uses: raypappa/helm-charts-actions/collect-charts@main
+        uses: bjw-s/helm-charts-actions/collect-charts@main
         id: collect-charts
         with:
           repoConfigFile: ./.ci/repo-config.yaml
@@ -84,6 +83,10 @@ jobs:
   release-github-oci:
     name: Release Application charts to GitHub Container Registry
     uses: ./.github/workflows/charts-release-oci.yaml
+    permissions:
+      actions: read
+      packages: write
+      id-token: write
     needs:
       - prepare
       - release-library-charts

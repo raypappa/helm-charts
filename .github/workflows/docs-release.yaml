@@ -51,4 +51,4 @@ jobs:
           publish_dir: ./site
           destination_dir: docs
           user_name: "raypappa-bot[bot]"
-          user_email: "raypappa-bot <87358111+raypappa-bot[bot]@users.noreply.github.com>"
+          user_email: "raypappa-bot <181794460+raypappa-bot[bot]@users.noreply.github.com>"

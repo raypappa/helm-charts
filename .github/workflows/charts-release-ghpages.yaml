@@ -81,8 +81,8 @@ jobs:
           repository: dest
           branch: gh-pages
           commit_user_name: "raypappa-bot[bot]"
-          commit_user_email: 87358111+raypappa-bot[bot]@users.noreply.github.com
-          commit_author: raypappa-bot[bot] <87358111+raypappa-bot[bot]@users.noreply.github.com>
+          commit_user_email: 181794460+raypappa-bot[bot]@users.noreply.github.com
+          commit_author: raypappa-bot[bot] <181794460+raypappa-bot[bot]@users.noreply.github.com>
           file_pattern: "index.yaml **/*.tgz"
           disable_globbing: true
 
