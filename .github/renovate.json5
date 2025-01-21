@@ -1,0 +1,7 @@
+{
+  extends: [
+    "github>raypappa/renovate-config",
+    "github>raypappa/renovate-config:automerge-github-actions",
+    "github>raypappa/helm-charts//.github/renovate/custom-managers.json5"
+  ],
+}

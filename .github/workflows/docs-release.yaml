@@ -1,0 +1,54 @@
+name: "Docs: Release to GitHub pages"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/docs-release.yaml"
+      - ".ci/mkdocs/mkdocs.yml"
+      - "docs/**"
+
+permissions:
+  contents: write
+
+jobs:
+  release-docs:
+    name: Release documentation
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: "Generate Short Lived OAuth App Token (ghs_*)"
+        uses: actions/create-github-app-token@v1.10.4
+        id: app-token
+        with:
+          app-id: "${{ secrets.BJWS_APP_ID }}"
+          private-key: "${{ secrets.BJWS_APP_PRIVATE_KEY }}"
+
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install requirements
+        run: pip install -r docs/requirements.txt
+
+      - name: Build and publish docs
+        run: mkdocs build -f .ci/mkdocs/mkdocs.yml
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ steps.app-token.outputs.token }}
+          publish_dir: ./site
+          destination_dir: docs
+          user_name: "raypappa-bot[bot]"
+          user_email: "raypappa-bot <87358111+raypappa-bot[bot]@users.noreply.github.com>"
