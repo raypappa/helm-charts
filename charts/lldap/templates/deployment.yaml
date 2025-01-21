@@ -6,8 +6,9 @@ metadata:
   labels:
     app: lldap
   annotations:
-    lldap: https://github.com/nitnelave/lldap
+    lldap: https://github.com/lldap/lldap
     k8s: https://github.com/Evantage-WS/lldap-kubernetes
+    chart: https://github.com/raypappa/helm-charts
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -20,8 +21,9 @@ spec:
       labels:
         app: lldap
       annotations:
-        lldap: https://github.com/nitnelave/lldap
+        lldap: https://github.com/lldap/lldap
         k8s: https://github.com/Evantage-WS/lldap-kubernetes
+        chart: https://github.com/raypappa/helm-charts
     spec:
       containers:
         - name: lldap

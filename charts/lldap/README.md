@@ -1,6 +1,6 @@
 # lldap Helm Chart
 
-A Helm chart for deploying [lldap](https://github.com/nitnelave/lldap) a lightweight LDAP server on Kubernetes.
+A Helm chart for deploying [lldap](https://github.com/lldap/lldap) a lightweight LDAP server on Kubernetes.
 
 ## Table of Contents
 
@@ -53,7 +53,7 @@ The following table lists the configurable parameters of the lldap chart and the
 | Parameter                               | Description                                                  | Default Value                         |
 |-----------------------------------------|--------------------------------------------------------------|---------------------------------------|
 | `replicaCount`                          | Number of replicas                                           | `1`                                   |
-| `image.repository`                      | Image repository                                             | `"nitnelave/lldap"`                   |
+| `image.repository`                      | Image repository                                             | `"lldap/lldap"`                   |
 | `image.tag`                             | Image tag                                                    | `"latest"`                            |
 | `image.pullPolicy`                      | Image pull policy                                            | `"IfNotPresent"`                      |
 | `env.TZ`                                | Timezone for the application                                 | `"CET"`                               |

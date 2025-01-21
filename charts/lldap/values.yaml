@@ -50,8 +50,9 @@ affinity: {}
 replicaCount: 1
 
 image:
-  repository: "nitnelave/lldap"
-  tag: "latest"
+  repository: "lldap/lldap"
+  # renovate: datasource=docker depName=lldap/lldap
+  tag: "v0.6.1"
   pullPolicy: "IfNotPresent"
 
 
