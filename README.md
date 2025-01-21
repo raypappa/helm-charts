@@ -1,61 +1,67 @@
-# Using the Light LDAP (LLDAP) implementation for authentication on Kubernetes
+<div align="center">
 
-LLDAP homepage: https://github.com/nitnelave/lldap
+<img src="https://github.com/raypappa/raypappa/blob/main/_assets/images/logo.jpg?raw=true" align="left" width="144px" height="144px"/>
 
-## About
+<h1> helm-charts </h1>
 
-For testing purposes you can run the LLDAP container on Kubernetes and use the
-container as a LDAP authentication backend.
+</div>
 
-Thanks to nitnelave for the changing LLDAP to get it authenticating with SUSE
-Rancher (see https://github.com/nitnelave/lldap/issues/432)
+<div align="center">
 
-## Set the variables needed and create Kubernetes secret of it
+<a href="https://discord.gg/home-operations"><img src="https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue"></a>
 
-The LLDAP container will be using thes secrets, without creating these
-secrets, the pod will not be up and running
+</div>
 
-```
-NAMESPACE=lldap # in which namespace the lldap container will be installed, always use lowercase
-LLDAP_JWT_SECRET=<some random value>
-LLDAP_LDAP_USER_PASS=admin # change if wanted
-LLDAP_BASE_DN=dc=evantage,dc=nl # set your own is wanted
+<br><br>
 
-kubectl create secret generic lldap-credentials \
-  --from-literal=lldap-jwt-secret=${LLDAP_JWT_SECRET} \
-  --from-literal=lldap-ldap-user-pass=${LLDAP_LDAP_USER_PASS} \
-  --from-literal=base-dn=${LLDAP_BASE_DN} \
-  -n ${NAMESPACE}
-```
+👋 Welcome to my Helm Charts repository. This repo contains Helm charts that I have developed to run applications in my [home Kubernetes cluster](https://github.com/raypappa/homelab/).
+This repo is **not** intended to be a replacement for any of the large collections of Helm charts that are out there.
 
-## Apply the yaml files
+---
 
-A PVC will be used to store the data persistant. It will use the local path provisioner,
-see https://github.com/rancher/local-path-provisioner. If it is not installed, please
-install this prior to applying the LLDAP yaml files.
+## Installation
 
-Apply the LLDAP deployment in the same namespace as where the secrets were created:
+[Helm](https://helm.sh) must be installed to use the charts in this repository.
 
-```
-kubectl apply -f lldap-persistentvolumeclaim.yaml -n ${NAMESPACE}
-kubectl apply -f lldap-deployment.yaml -n ${NAMESPACE}
-kubectl apply -f lldap-service.yaml -n ${NAMESPACE}
+The Helm repository can be installed as follows:
+
+```console
+helm repo add raypappa https://raypappa.github.io/helm-charts
 ```
 
-It will take maybe a minute or so, after pulling the image it will be up and running.
+You can then run `helm search repo raypappa` to search the charts.
 
-Your LLDAP container is then ready for accepting LDAP requests on port 3890.
+---
 
-## Accessing the UI
+### 📖 Docs
 
-To add user and groups to LLDAP, you can use the UI of LLDAP. You can use a kubectl
-port-forward on the service to get to this UI:
-```
-kubectl port-forward service/lldap-service 17170:17170 -n ${NAMESPACE}
-```
+The documentation that goes along with this repo can be found [over here](https://raypappa.github.io/helm-charts/).
 
-And in your browser go to http://127.0.0.1:17170. Login with admin and the password set in variable above.
+---
 
-For creating user and groups, please look at the LLDAP documentation at https://github.com/nitnelave/lldap
+### 🔎 Support
 
-Good luck!
+If you like this project, please consider supporting my work through my [GitHub sponsorship page](https://github.com/sponsors/raypappa?frequency=one-time).
+
+---
+
+## How do I find people running these charts?
+
+### Discord
+
+Join the home-operations [Discord](https://discord.gg/home-operations) community on Discord.
+
+### Repository topics
+
+Have a look at people running Kubernetes at home by checking the ["`k8s-at-home`"](https://github.com/topics/k8s-at-home?o=desc&s=updated) or ["`kubesearch`"](https://github.com/topics/kubesearch?o=desc&s=updated) on GitHub.
+
+### Search
+
+You can use the awesome [kubesearch](https://kubesearch.dev) provided by [@whazor](https://github.com/whazor) to search for public
+repositories containing any application you might wish to run.
+
+---
+
+### 🔏 License
+
+See [LICENSE](https://github.com/raypappa/helm-charts/blob/main/LICENSE)
