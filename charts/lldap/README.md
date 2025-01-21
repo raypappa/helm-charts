@@ -15,7 +15,7 @@ A Helm chart for deploying [lldap](https://github.com/lldap/lldap) a lightweight
 
 ## Prerequisites
 
-- Kubernetes cluster 
+- Kubernetes cluster
 - Helm
 
 ## Installation
