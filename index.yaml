@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  lldap-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-21T03:55:57.989571705Z"
+    description: A Helm chart for Kubernetes
+    digest: 12653d54b1039e837b972496ff0101cf0b06c791f912fe39a7d40af6e4bdf665
+    name: lldap-chart
+    type: application
+    urls:
+    - https://github.com/raypappa/helm-charts/releases/download/lldap-chart-0.1.0/lldap-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-01-21T03:55:57.989576344Z"
