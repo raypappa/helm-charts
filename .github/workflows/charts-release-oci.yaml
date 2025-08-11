@@ -27,12 +27,12 @@ jobs:
       id-token: write # for creating OIDC tokens for signing.
     steps:
       - name: Checkout chart sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
           fetch-depth: 0
 
       - name: Install Kubernetes tools
-        uses: yokawasa/action-setup-kube-tools@v0.11.2
+        uses: yokawasa/action-setup-kube-tools@9e25a4277af127b60011c95b6ed2da7e3b3613b1 # v0.11.2
         with:
           setup-tools: |
             helmv3
@@ -42,7 +42,7 @@ jobs:
         uses: sigstore/cosign-installer@d58896d6a1865668819e1d91763c7751a165e159 # v3.9.2
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
         with:
           registry: ${{ env.TARGET_REGISTRY }}
           username: ${{ github.actor }}
