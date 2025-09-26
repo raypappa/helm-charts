@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
           fetch-depth: 0
           ref: ${{ inputs.checkoutCommit }}
@@ -62,7 +62,7 @@ jobs:
           helm: "${{ env.HELM_VERSION }}"
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.7.0
+        uses: helm/chart-testing-action@0d28d3144d3a25ea2cc349d6e59901c4ff469b3b # v2.7.0
 
       - name: Override chart dependencies
         uses: ./.github/actions/override-chart-deps
