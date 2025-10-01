@@ -52,7 +52,7 @@ replicaCount: 1
 image:
   repository: "lldap/lldap"
   # renovate: datasource=docker depName=lldap/lldap
-  tag: "v0.6.1"
+  tag: "v0.6.2"
   pullPolicy: "IfNotPresent"
 
 
