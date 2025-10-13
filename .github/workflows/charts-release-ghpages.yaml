@@ -75,7 +75,7 @@ jobs:
           helm repo index . --url https://raypappa.github.io/helm-charts/
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 # v7
         id: auto-commit
         with:
           repository: dest
