@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v6.5
+        uses: tj-actions/branch-names@2e5354c6733793113f416314375826df030ada23 # v6.5
 
       - name: Save PR data to file
         env:
@@ -44,7 +44,7 @@ jobs:
           echo $PR_NUMBER > pr_number.txt
 
       - name: Store pr data in artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: pr_metadata
           path: ./pr_number.txt
@@ -64,12 +64,12 @@ jobs:
       commonLibraryUpdated: ${{ contains(fromJSON(steps.changed-charts.outputs.charts), 'library/common') }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
       - name: Collect changed files
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
         id: changed-files
         with:
           list-files: json
