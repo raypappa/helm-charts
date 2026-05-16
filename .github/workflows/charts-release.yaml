@@ -29,12 +29,12 @@ jobs:
       applicationChartsToRelease: ${{ steps.collect-charts.outputs.chartsApplicationToRelease }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
       - name: Collect charts to release
-        uses: bjw-s/helm-charts-actions/collect-charts@main
+        uses: bjw-s/helm-charts-actions/collect-charts@09a7d0a380922725607159134e0da346d6c1929d # main
         id: collect-charts
         with:
           repoConfigFile: ./.ci/repo-config.yaml
