@@ -2,7 +2,7 @@
 version: "3"
 
 vars:
-  CT_IMAGE: quay.io/helmpack/chart-testing:v3.6.0
+  CT_IMAGE: quay.io/helmpack/chart-testing:v3.14.0
   REPO_CONFIG_FILE: .ci/repo-config.yaml
   CT_CONFIG_FILE: .ci/ct/ct.yaml
   CHARTS_EXCLUDED_FROM_LINT:
