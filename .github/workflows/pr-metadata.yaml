@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v6.5
+        uses: tj-actions/branch-names@2e5354c6733793113f416314375826df030ada23 # v6.5
 
       - name: Save PR data to file
         env:
@@ -69,7 +69,7 @@ jobs:
           fetch-depth: 0
 
       - name: Collect changed files
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@0e4a8c6effa4802afeda77dc8d303f8176d7dfad # v3
         id: changed-files
         with:
           list-files: json
