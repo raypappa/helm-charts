@@ -6,6 +6,9 @@ on:
       checkoutCommit:
         required: true
         type: string
+      baseCommit:
+        required: true
+        type: string
       isRenovatePR:
         required: true
         default: "false"
@@ -35,27 +38,54 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Checkout pull request branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          path: pull
           fetch-depth: 0
-          ref: ${{ inputs.checkoutCommit }}
 
-      - name: Verify chart version
-        uses: raypappa/helm-charts-actions/verify-chart-version@main
-        id: verify-chart-version
+      - name: Checkout default branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          chart: "charts/${{ matrix.chart }}"
+          ref: ${{ inputs.baseCommit }}
+          path: default
+          fetch-depth: 0
 
-      - name: Verify chart changelog
-        uses: raypappa/helm-charts-actions/verify-chart-changelog@main
-        if: inputs.isRenovatePR != 'true'
-        id: verify-chart-changelog
-        with:
-          chart: "charts/${{ matrix.chart }}"
+      - name: Get chart details for PR
+        id: chart-details-pr
+        env:
+          CHART: ${{ matrix.chart }}
+        run: |
+          args=(
+            "pull/charts/${CHART}"
+            --validateChartYaml
+          )
+          if [[ "${{ inputs.isRenovatePR }}" != "true" ]]; then
+            args+=(--requireChangelog)
+          fi
+          .ci/scripts/get-chart-details.sh "${args[@]}"
+
+      - name: Get chart details for default branch
+        id: chart-details-default
+        env:
+          CHART: ${{ matrix.chart }}
+        run: |
+          .ci/scripts/get-chart-details.sh \
+            "default/charts/${CHART}" \
+            --allowChartToNotExist
+
+      - name: Check version update
+        if: ${{ steps.chart-details-pr.outputs.version == steps.chart-details-default.outputs.version }}
+        env:
+          CHART: ${{ matrix.chart }}
+          PR_VERSION: ${{ steps.chart-details-pr.outputs.version }}
+          DEFAULT_VERSION: ${{ steps.chart-details-default.outputs.version }}
+        run: |
+          echo "::error::Chart '${CHART}' version has not been updated. PR version: ${PR_VERSION}, default branch version: ${DEFAULT_VERSION}." >&2
+          exit 1
 
       - name: Install Kubernetes tools
-        uses: yokawasa/action-setup-kube-tools@9d39563c24d4a419d1a8289c34d6da5a6171252c # v0.13.5
+        uses: yokawasa/action-setup-kube-tools@5778123f7b071387e9c8e522492d8f39427dc6c7 # v0.13.4
         with:
           setup-tools: |
             helmv3
