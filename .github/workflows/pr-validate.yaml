@@ -29,6 +29,7 @@ jobs:
       - pr-metadata
     with:
       checkoutCommit: ${{ github.sha }}
+      baseCommit: ${{ github.event.pull_request.base.sha }}
       chartsToLint: ${{ needs.pr-metadata.outputs.chartsToLint }}
       isRenovatePR: ${{ needs.pr-metadata.outputs.isRenovatePR }}
 
@@ -38,10 +39,4 @@ jobs:
       - pr-metadata
     with:
       checkoutCommit: ${{ github.sha }}
-      chartsToTest: |-
-        ${{
-           (
-             (needs.pr-metadata.outputs.commonLibraryUpdated=='true') &&
-             '["library/common-test"]'
-           ) || needs.pr-metadata.outputs.chartsToInstall
-         }}
+      chartsToTest: ${{ needs.pr-metadata.outputs.chartsToInstall }}
