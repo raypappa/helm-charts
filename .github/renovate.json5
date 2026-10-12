@@ -2,6 +2,6 @@
   extends: [
     "github>bjw-s/renovate-config",
     "github>bjw-s/renovate-config:automerge-github-actions",
-    "github>raypappa/helm-charts//.github/renovate/custom-managers.json5"
+    "github>raypappa/helm-charts//.github/renovate/custom-managers.json5",
   ],
 }

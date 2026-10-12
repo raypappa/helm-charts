@@ -11,7 +11,7 @@
       ],
       datasourceTemplate: "helm",
       versioningTemplate: "semver",
-      registryUrlTemplate: "https://raypappa.github.io/helm-charts"
+      registryUrlTemplate: "https://raypappa.github.io/helm-charts",
     },
   ],
 }
