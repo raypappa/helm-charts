@@ -55,6 +55,7 @@ Your LLDAP container is then ready for accepting LDAP requests on port 3890.
 
 To add user and groups to LLDAP, you can use the UI of LLDAP. You can use a kubectl
 port-forward on the service to get to this UI:
+
 ```
 kubectl port-forward service/lldap-service 17170:17170 -n ${NAMESPACE}
 ```
