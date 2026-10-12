@@ -7,8 +7,7 @@ tasks:
   update:
     desc: Update pre-commit hooks
     cmds:
-      - pre-commit autoupdate --config .ci/pre-commit/config.yaml
-
+      - pre-commit autoupdate --config .ci/pre-commit/config.yaml --freeze
   run:
     desc: Run pre-commit
     cmds:
