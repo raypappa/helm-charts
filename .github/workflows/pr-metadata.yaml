@@ -38,7 +38,7 @@ on:
 jobs:
   pr-metadata:
     name: Collect PR metadata
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       isRenovatePR: ${{ startsWith(github.head_ref, 'renovate/') }}
       isFork: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
@@ -58,7 +58,7 @@ jobs:
 
   prepare:
     name: Prepare data required for workflow
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       addedOrModifiedFilesDetected: ${{ steps.added-modified-files.outputs.any_modified }}
       addedOrModifiedFiles: ${{ steps.added-modified-files.outputs.all_modified_files }}
