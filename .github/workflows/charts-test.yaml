@@ -57,7 +57,7 @@ jobs:
       - name: Create k3d cluster
         uses: nolar/setup-k3d-k3s@62c9d1bd2bc843275c85d2e7dcd696edc1160eee # v1.1.0
         with:
-          version: ${{ matrix.k8s_version }}
+          version: ${{ matrix.k8s_version }}+k3s1
 
       - name: Remove node taints
         run: |
