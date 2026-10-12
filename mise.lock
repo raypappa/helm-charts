@@ -106,3 +106,12 @@ url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/50
 checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
 url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
 url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[[tools."pypi:yamale"]]
+version = "6.1.0"
+backend = "pypi:yamale"
+specifiers = [
+    "6.1.0",
+    "latest",
+]
+uv = { path = ".mise/locks/pypi-yamale/6.1.0", digest = "sha256:61fa9d4a747de837eca34315fda65a4fd98793da0d7709b4660204a1ebd77b1f" }
