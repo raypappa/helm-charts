@@ -40,7 +40,6 @@ jobs:
       - name: Checkout pull request branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          path: pull
           fetch-depth: 0
 
       - name: Checkout default branch
@@ -56,7 +55,7 @@ jobs:
           CHART: ${{ matrix.chart }}
         run: |
           args=(
-            "pull/charts/${CHART}"
+            "charts/${CHART}"
             --validateChartYaml
           )
           if [[ "${{ inputs.isRenovatePR }}" != "true" ]]; then
@@ -69,7 +68,7 @@ jobs:
         env:
           CHART: ${{ matrix.chart }}
         run: |
-          .ci/scripts/get-chart-details.sh \
+          default/.ci/scripts/get-chart-details.sh \
             "default/charts/${CHART}" \
             --allowChartToNotExist
 
