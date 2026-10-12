@@ -8,3 +8,6 @@ __snapshot__/
 
 # Docs
 _site/
+
+# Node.js dependencies
+node_modules/
