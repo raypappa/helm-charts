@@ -11,32 +11,38 @@ on:
         value: ${{ jobs.pr-metadata.outputs.isFork }}
       addedOrModifiedFilesDetected:
         description: "Does the PR contain any changes?"
-        value: ${{ jobs.pr-changes.outputs.addedOrModifiedFilesDetected }}
+        value: ${{ jobs.prepare.outputs.addedOrModifiedFilesDetected }}
       addedOrModifiedFiles:
         description: "A list of the files changed in this PR"
-        value: ${{ jobs.pr-changes.outputs.addedOrModifiedFiles }}
+        value: ${{ jobs.prepare.outputs.addedOrModifiedFiles }}
       addedOrModifiedCharts:
         description: "A list of the charts changed in this PR"
-        value: ${{ jobs.pr-changes.outputs.addedOrModifiedCharts }}
+        value: ${{ jobs.prepare.outputs.addedOrModifiedCharts }}
+      addedOrModifiedApplicationCharts:
+        description: "A list of the application charts changed in this PR"
+        value: ${{ jobs.prepare.outputs.addedOrModifiedApplicationCharts }}
+      addedOrModifiedLibraryCharts:
+        description: "A list of the library charts changed in this PR"
+        value: ${{ jobs.prepare.outputs.addedOrModifiedLibraryCharts }}
       chartsToLint:
-        value: ${{ jobs.pr-changes.outputs.chartsToLint }}
+        value: ${{ jobs.prepare.outputs.chartsToLint }}
       chartsToInstall:
-        value: ${{ jobs.pr-changes.outputs.chartsToInstall }}
-      commonLibraryUpdated:
-        value: ${{ jobs.pr-changes.outputs.commonLibraryUpdated }}
+        value: ${{ jobs.prepare.outputs.chartsToInstall }}
+      chartsToRelease:
+        value: ${{ jobs.prepare.outputs.chartsToRelease }}
+      libraryChartsToRelease:
+        value: ${{ jobs.prepare.outputs.libraryChartsToRelease }}
+      applicationChartsToRelease:
+        value: ${{ jobs.prepare.outputs.applicationChartsToRelease }}
 
 jobs:
   pr-metadata:
     name: Collect PR metadata
     runs-on: ubuntu-22.04
     outputs:
-      isRenovatePR: ${{ startsWith(steps.branch-name.outputs.current_branch, 'renovate/') }}
+      isRenovatePR: ${{ startsWith(github.head_ref, 'renovate/') }}
       isFork: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
     steps:
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v6.5
-
       - name: Save PR data to file
         env:
           PR_NUMBER: ${{ github.event.number }}
@@ -44,39 +50,115 @@ jobs:
           echo $PR_NUMBER > pr_number.txt
 
       - name: Store pr data in artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pr_metadata
           path: ./pr_number.txt
           retention-days: 5
 
-  pr-changes:
-    name: Collect PR changes
+  prepare:
+    name: Prepare data required for workflow
     runs-on: ubuntu-22.04
     outputs:
-      addedOrModifiedFilesDetected: ${{ steps.changed-files.outputs.allAddedOrModified }}
-      addedOrModifiedFiles: ${{ steps.changed-files.outputs.allAddedOrModified_files }}
-      addedOrModifiedCharts: ${{ steps.changed-charts.outputs.charts }}
-      addedOrModifiedLibraryCharts: ${{ steps.changed-charts.outputs.chartsLibrary }}
-      addedOrModifiedApplicationCharts: ${{ steps.changed-charts.outputs.chartsApplication }}
-      chartsToLint: ${{ steps.changed-charts.outputs.chartsToLint }}
-      chartsToInstall: ${{ steps.changed-charts.outputs.chartsToInstall }}
-      commonLibraryUpdated: ${{ contains(fromJSON(steps.changed-charts.outputs.charts), 'library/common') }}
+      addedOrModifiedFilesDetected: ${{ steps.added-modified-files.outputs.any_modified }}
+      addedOrModifiedFiles: ${{ steps.added-modified-files.outputs.all_modified_files }}
+      addedOrModifiedCharts: ${{ steps.changed-charts.outputs.all_modified_files }}
+      addedOrModifiedApplicationCharts: ${{ steps.split-charts.outputs.applicationCharts }}
+      addedOrModifiedLibraryCharts: ${{ steps.split-charts.outputs.libraryCharts }}
+      chartsToLint: ${{ steps.charts-to-lint.outputs.filteredCharts }}
+      chartsToInstall: ${{ steps.charts-to-install.outputs.filteredCharts }}
+      chartsToRelease: ${{ steps.charts-to-release.outputs.filteredCharts }}
+      libraryChartsToRelease: ${{ steps.charts-to-release.outputs.libraryCharts }}
+      applicationChartsToRelease: ${{ steps.charts-to-release.outputs.applicationCharts }}
     steps:
       - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
-      - name: Collect changed files
-        uses: dorny/paths-filter@v3
-        id: changed-files
-        with:
-          list-files: json
-          filters: |
-            allAddedOrModified:
-              - added|modified: '**'
+      - name: Grab repository configuration
+        id: repo-config
+        shell: bash
+        run: |
+          echo "config=$(yq '.' '.ci/repo-config.yaml' -o json -I=0)" >> "$GITHUB_OUTPUT"
 
-      - name: Collect changed charts
-        uses: raypappa/helm-charts-actions/collect-charts@main
+      - name: Get all added or modified files
+        id: added-modified-files
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          json: true
+          escape_json: false
+
+      - name: Get added or modified charts
         id: changed-charts
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          path: charts
+          dir_names: true
+          dir_names_exclude_current_dir: true
+          dir_names_max_depth: 2
+          json: true
+          escape_json: false
+
+      - name: Split charts into library / application
+        id: split-charts
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CHANGED_CHARTS: ${{ steps.changed-charts.outputs.all_modified_files }}
+        with:
+          script: |
+            const raw = process.env.CHANGED_CHARTS ?? '[]';
+            const charts = JSON.parse(raw);
+            const libraryCharts = charts.filter(chart => chart.startsWith('library/'));
+            const applicationCharts = charts.filter(chart => !chart.startsWith('library/'));
+            core.setOutput('libraryCharts', JSON.stringify(libraryCharts));
+            core.setOutput('applicationCharts', JSON.stringify(applicationCharts));
+
+      - name: Determine charts to lint
+        id: charts-to-lint
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CHANGED_CHARTS: ${{ steps.changed-charts.outputs.all_modified_files }}
+          REPO_SETTINGS: ${{ steps.repo-config.outputs.config }}
+        with:
+          script: |
+            const { CHANGED_CHARTS, REPO_SETTINGS } = process.env;
+            const changedCharts = JSON.parse(CHANGED_CHARTS);
+            const repoSettings = JSON.parse(REPO_SETTINGS);
+            const excluded = new Set(repoSettings['excluded-charts-lint'] ?? []);
+            const filteredCharts = changedCharts.filter(chart => !excluded.has(chart));
+            core.setOutput('filteredCharts', JSON.stringify(filteredCharts));
+
+      - name: Determine charts to install
+        id: charts-to-install
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CHANGED_CHARTS: ${{ steps.changed-charts.outputs.all_modified_files }}
+          REPO_SETTINGS: ${{ steps.repo-config.outputs.config }}
+        with:
+          script: |
+            const { CHANGED_CHARTS, REPO_SETTINGS } = process.env;
+            const changedCharts = JSON.parse(CHANGED_CHARTS);
+            const repoSettings = JSON.parse(REPO_SETTINGS);
+            const excluded = new Set(repoSettings['excluded-charts-install'] ?? []);
+            const filteredCharts = changedCharts.filter(chart => !excluded.has(chart));
+            core.setOutput('filteredCharts', JSON.stringify(filteredCharts));
+
+      - name: Determine charts to release (filter excluded-charts-release)
+        id: charts-to-release
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CHANGED_CHARTS: ${{ steps.changed-charts.outputs.all_modified_files }}
+          REPO_SETTINGS: ${{ steps.repo-config.outputs.config }}
+        with:
+          script: |
+            const { CHANGED_CHARTS, REPO_SETTINGS } = process.env;
+            const changedCharts = JSON.parse(CHANGED_CHARTS);
+            const repoSettings = JSON.parse(REPO_SETTINGS);
+            const excluded = new Set(repoSettings['excluded-charts-release'] ?? []);
+            const filteredCharts = changedCharts.filter(chart => !excluded.has(chart));
+            const libraryCharts = filteredCharts.filter(chart => chart.startsWith('library/'));
+            const applicationCharts = filteredCharts.filter(chart => !chart.startsWith('library/'));
+            core.setOutput('filteredCharts', JSON.stringify(filteredCharts));
+            core.setOutput('libraryCharts', JSON.stringify(libraryCharts));
+            core.setOutput('applicationCharts', JSON.stringify(applicationCharts));

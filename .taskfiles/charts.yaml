@@ -9,6 +9,7 @@ vars:
     sh: yq eval '.excluded-charts-lint | join(",")' {{.REPO_CONFIG_FILE}}
   CHARTS_EXCLUDED_FROM_INSTALL:
     sh: yq eval '.excluded-charts-install | join(",")' {{.REPO_CONFIG_FILE}}
+  TEST_GLOB: 'tests/**/*_test.yaml'
 
 tasks:
   lint:
@@ -29,4 +30,27 @@ tasks:
     cmds:
     - find {{.PROJECT_DIR}}/charts/ -type f -name 'Chart.lock' -mindepth 1 -print0 | xargs -r -0 rm
     - find {{.PROJECT_DIR}}/charts/ -type d -name 'charts' -mindepth 1 -print0 | xargs -r -0 rm -rf
+    silent: true
+
+  chart:lint:
+    desc: Lint a single chart (CHART=lldap or similar)
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - ct lint --config {{.CT_CONFIG_FILE}} --charts "charts/{{.CHART}}"
+    silent: true
+
+  chart:integration-test:
+    desc: Install and smoke-test a single chart with chart-testing (CHART=lldap or similar)
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - ct install --config {{.CT_CONFIG_FILE}} --charts "charts/{{.CHART}}"
+    silent: true
+
+  chart:unit-test:
+    desc: Run helm-unittest on a single chart (CHART=lldap; optional GLOB override)
+    dir: "{{.PROJECT_DIR}}/charts/{{.CHART}}"
+    cmds:
+      - helm plugin install https://github.com/helm-unittest/helm-unittest.git
+      - helm dep update
+      - helm unittest -f "{{.TEST_GLOB}}" .
     silent: true

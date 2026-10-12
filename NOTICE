@@ -1,0 +1,25 @@
+raypappa/helm-charts
+Copyright 2025 raypappa
+
+This product includes software developed by Bernd Schorgers and contributors
+to the bjw-s / bjw-s-labs helm-charts-actions and helm-charts projects
+(https://github.com/bjw-s-labs/helm-charts, https://github.com/bjw-s-labs/helm-charts-actions).
+
+The following files in this repository contain code adapted from
+bjw-s-labs/helm-charts under the Apache License 2.0:
+
+  - .ci/scripts/get-chart-details.sh
+        Original: bjw-s-labs/helm-charts @ f18861fb (.ci/scripts/get-chart-details.sh)
+        Copyright 2025 Bernd Schorgers
+
+  - .github/workflows/charts-release.yaml (prepare job structure)
+  - .github/workflows/pr-metadata.yaml (prepare job structure)
+  - .github/workflows/charts-lint.yaml (chart-details invocation pattern)
+
+These adaptations are used under the Apache License, Version 2.0; a copy
+of the License is included in the LICENSE file in the root of this
+repository.
+
+The original Apache 2.0 LICENSE and copyright notices from those works
+are preserved in the source files where they appear, in accordance with
+the redistribution terms of the Apache License 2.0.

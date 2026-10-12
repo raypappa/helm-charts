@@ -25,21 +25,21 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: "Generate Short Lived OAuth App Token (ghs_*)"
-        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         id: app-token
         with:
           app-id: "${{ secrets.RAYPAPPA_APP_ID }}"
           private-key: "${{ secrets.RAYPAPPA_APP_PRIVATE_KEY }}"
 
       - name: Checkout charts branch
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ steps.app-token.outputs.token }}
           path: "src"
           fetch-depth: 0
 
       - name: Checkout gh-pages branch
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ steps.app-token.outputs.token }}
           path: "dest"
@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Kubernetes tools
-        uses: yokawasa/action-setup-kube-tools@9d39563c24d4a419d1a8289c34d6da5a6171252c # v0.13.5
+        uses: yokawasa/action-setup-kube-tools@b16d49b2c459d33cf9d4c300a220ef0bcdbc730a # v0.14.0
         with:
           setup-tools: |
             helmv3
