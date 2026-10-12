@@ -3,42 +3,39 @@
 lockfile_version = 3
 
 [[tools."github:helm/chart-testing"]]
-version = "3.14.0"
+version = "3.15.0"
 backend = "github:helm/chart-testing"
-specifiers = [
-    "3.14.0",
-    "latest",
-]
+specifiers = ["v3.15.0"]
 
 [tools."github:helm/chart-testing"."platforms.linux-arm64"]
-checksum = "sha256:7b035bbbd0768fba33983e81c15445e33e9c8281d329100852a342ecfd0b16b7"
-url = "https://github.com/helm/chart-testing/releases/download/v3.14.0/chart-testing_3.14.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/301945188"
+checksum = "sha256:732d3187e8d7f9c72ab6775f4ebc374562e384e50f94fc0b2844c002e8bad5e5"
+url = "https://github.com/helm/chart-testing/releases/download/v3.15.0/chart-testing_3.15.0_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/614959658"
 
 [tools."github:helm/chart-testing"."platforms.linux-arm64-musl"]
-checksum = "sha256:7b035bbbd0768fba33983e81c15445e33e9c8281d329100852a342ecfd0b16b7"
-url = "https://github.com/helm/chart-testing/releases/download/v3.14.0/chart-testing_3.14.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/301945188"
+checksum = "sha256:732d3187e8d7f9c72ab6775f4ebc374562e384e50f94fc0b2844c002e8bad5e5"
+url = "https://github.com/helm/chart-testing/releases/download/v3.15.0/chart-testing_3.15.0_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/614959658"
 
 [tools."github:helm/chart-testing"."platforms.linux-x64"]
-checksum = "sha256:d16f0583616885423826241164ce1f6589c6fe5332fa74f374ebd2bd3cb3fe1f"
-url = "https://github.com/helm/chart-testing/releases/download/v3.14.0/chart-testing_3.14.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/301945176"
+checksum = "sha256:467561730f25fe09d5e6cd09a3e1f6aa759871c657a57602947c716d9be2c583"
+url = "https://github.com/helm/chart-testing/releases/download/v3.15.0/chart-testing_3.15.0_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/614959662"
 
 [tools."github:helm/chart-testing"."platforms.linux-x64-musl"]
-checksum = "sha256:d16f0583616885423826241164ce1f6589c6fe5332fa74f374ebd2bd3cb3fe1f"
-url = "https://github.com/helm/chart-testing/releases/download/v3.14.0/chart-testing_3.14.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/301945176"
+checksum = "sha256:467561730f25fe09d5e6cd09a3e1f6aa759871c657a57602947c716d9be2c583"
+url = "https://github.com/helm/chart-testing/releases/download/v3.15.0/chart-testing_3.15.0_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/614959662"
 
 [tools."github:helm/chart-testing"."platforms.macos-arm64"]
-checksum = "sha256:db10dbbb42b110c7a5da5a3202908f32ad2ca6ad600d423426dc7886d09aad07"
-url = "https://github.com/helm/chart-testing/releases/download/v3.14.0/chart-testing_3.14.0_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/301945187"
+checksum = "sha256:cbf7eb16c9d460b12cd330d6366ce998c8f00267904632f272b632bf1c8606fb"
+url = "https://github.com/helm/chart-testing/releases/download/v3.15.0/chart-testing_3.15.0_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/614959727"
 
 [tools."github:helm/chart-testing"."platforms.macos-x64"]
-checksum = "sha256:6dbad5d05a357f6837764c0620c84e707c81189d6f5e9946643276848f5f7116"
-url = "https://github.com/helm/chart-testing/releases/download/v3.14.0/chart-testing_3.14.0_darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/301945185"
+checksum = "sha256:07363d48ac59c337f0d06248e2d7ae23022279b4912014b6eaa28e6a5079f1b2"
+url = "https://github.com/helm/chart-testing/releases/download/v3.15.0/chart-testing_3.15.0_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/helm/chart-testing/releases/assets/614959660"
 
 [[tools.helm]]
 version = "4.3.0"

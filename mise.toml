@@ -1,4 +1,4 @@
 [tools]
-"github:helm/chart-testing" = { version = "3.14.0", exe = "ct" }
+"github:helm/chart-testing" = { version = "v3.15.0", exe = "ct" }
 helm = "4.3.0"
 pre-commit = "4.6.2"
