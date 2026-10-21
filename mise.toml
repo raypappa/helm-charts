@@ -3,7 +3,7 @@
 helm = "4.3.0"
 pre-commit = { version = "4.6.2" }
 "pypi:yamale" = { version = "6.1.0", extra = "ruamel" }
-python = "3.14.8"
+python = "3.15.1"
 yamllint = "1.38.0"
 
 [settings]
